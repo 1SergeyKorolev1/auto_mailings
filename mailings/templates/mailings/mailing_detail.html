@@ -7,7 +7,11 @@
     <li><b>Статус</b> - {{ mailing.status|title }}</li>
     <li><b>Периодичность</b> - {{ mailing.periodicity }}</li>
     <li><b>Дата старта</b> - {{ mailing.first_date }}</li>
+    {% if mailing.status == 'завершена' %}
+    <li><b>Дней до следующей отправки</b> - Рассылка завершена </li>
+    {% else %}
     <li><b>Дней до следующей отправки</b> - {{ mailing.check_periodicity }}</li>
+    {% endif %}
     <li>
         <p class="mb-1"><b>Клиенты получатели:</b></p>
         {% for client in mailing.clients.all %}
