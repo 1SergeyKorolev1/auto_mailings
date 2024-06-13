@@ -18,7 +18,7 @@ class MailingUpdateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Mailing
         # fields = '__all__'
-        fields = ('first_date', 'periodicity', 'status', 'message', 'clients')
+        fields = ('first_date', 'periodicity', 'message', 'clients')
         # exclude = ('name')
 
 class MailingMessageUpdateForm(StyleFormMixin, forms.ModelForm):

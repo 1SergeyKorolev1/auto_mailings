@@ -38,9 +38,10 @@ class RecipientClient(models.Model):
         verbose_name_plural = 'Клиенты получатели'  # Настройка для наименования набора объектов
 
 class Mailing(models.Model):
-    first_date = models.DateField(verbose_name='дата первой отправки')
+    first_date = models.DateField(verbose_name='дата первой отправки. Формат: 2024-06-13')
     periodicity = models.CharField(choices=PERIODICITY_DATA, verbose_name='периодичность')
-    status = models.CharField(choices=STATUS_DATA, verbose_name='статус', **NULLABLE)
+    check_periodicity = models.IntegerField(default='0', verbose_name='дней до следующей отправки')
+    status = models.CharField(choices=STATUS_DATA, default='создана', verbose_name='статус', **NULLABLE)
     message = models.ForeignKey(MailingMessage, on_delete=models.SET_NULL, verbose_name='сообщение', **NULLABLE)
     clients = models.ManyToManyField(RecipientClient, verbose_name='клиенты')
 
