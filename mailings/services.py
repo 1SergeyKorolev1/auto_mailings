@@ -35,7 +35,7 @@ def start_apscheduler():
     print('Starting scheduler...')
     scheduler = BackgroundScheduler()
     if not scheduler.running:
-        scheduler.add_job(sending_messages, 'interval', seconds=30)
+        scheduler.add_job(sending_messages, 'interval', seconds=10)
         scheduler.start()
         print('Scheduler запущен успешно')
 
