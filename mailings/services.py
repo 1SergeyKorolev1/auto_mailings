@@ -13,12 +13,12 @@ def sending_messages():
     current_datetime = dt.now(zone)
     from mailings.models import Mailing
     mailings = Mailing.objects.filter(status='запущена')
-    print(f'Количество рассылок для отправки: {mailings.count()}')
+    print(f'\nКоличество рассылок для отправки: {mailings.count()}')
     print(f'Сейчас - {current_datetime}')
     for mailing in mailings:
         clients = mailing.clients.all()
         client_emails = [client.email for client in clients]
-        print(f'Клиенты получатели - {client_emails}\n')
+        print(f'Клиенты получатели - {client_emails}')
         try:
             send_mail(
                 mailing.message.theme,

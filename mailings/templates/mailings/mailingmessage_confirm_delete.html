@@ -7,11 +7,11 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    <h3>Хотите удалить рассылку? {{ object.name }}</h3>
+                    <h3>Хотите удалить сообщение? {{ object.theme }}</h3>
                     <button type="submit" class="btn btn-secondary">
                         Подтвердить
                     </button>
-                    <a class="btn btn-success" href="{% url 'mailings:mailings_list' %}">
+                    <a class="btn btn-success" href="{% url 'mailings:message_list' %}">
                         Отмена
                     </a>
                 </form>

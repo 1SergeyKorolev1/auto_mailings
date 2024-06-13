@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import BooleanField
-from mailings.models import Mailing
+from mailings.models import Mailing, MailingMessage, RecipientClient
 
 
 
@@ -20,3 +20,13 @@ class MailingUpdateForm(StyleFormMixin, forms.ModelForm):
         # fields = '__all__'
         fields = ('first_date', 'periodicity', 'status', 'message', 'clients')
         # exclude = ('name')
+
+class MailingMessageUpdateForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = MailingMessage
+        fields = ('theme', 'body')
+
+class RecipientClientUpdateForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = RecipientClient
+        fields = ('email', 'full_name', 'comment')
