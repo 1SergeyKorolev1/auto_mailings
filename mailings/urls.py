@@ -1,6 +1,7 @@
 from django.urls import path
-# from mailings.services import start_apscheduler
+from mailings.services import start_apscheduler
 from mailings.apps import MailingsConfig
+from config.settings import AUTO_MAILING
 
 from mailings.views import (MailingListView, MailingUpdateView, MailingDetailView, MailingDeleteView, MailingCreateView,
                             MailingMessageListView, MailingMessageUpdateView, MailingMessageDetailView,
@@ -10,7 +11,9 @@ from mailings.views import (MailingListView, MailingUpdateView, MailingDetailVie
                             MailingHistoryDeleteView)
 
 app_name = MailingsConfig.name
-# start_apscheduler()
+
+if AUTO_MAILING:
+    start_apscheduler()
 
 urlpatterns = [
     path('', MailingListView.as_view(), name='mailings_list'),
