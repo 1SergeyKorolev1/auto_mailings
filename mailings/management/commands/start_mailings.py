@@ -29,6 +29,7 @@ class Command(BaseCommand):
                         mailing.message.body,
                         settings.EMAIL_HOST_USER,
                         client_emails,
+                        fail_silently=False,
                     )
                     HistoryMailing.objects.create(last_date=current_datetime,
                                                   status=True,

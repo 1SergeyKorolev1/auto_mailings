@@ -27,6 +27,7 @@ def sending_messages():
                     mailing.message.body,
                     EMAIL_HOST_USER,
                     client_emails,
+                    fail_silently=False,
                 )
                 HistoryMailing.objects.create(last_date=current_datetime,
                                               status=True,
