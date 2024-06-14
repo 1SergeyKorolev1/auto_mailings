@@ -2,9 +2,7 @@
 {% load my_tags %}
 {% block content %}
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
-    {% if perms.blog.add_publication %}
     <a class="btn btn-outline-primary" href="{% url 'blog:create' %}">+</a>
-    {% endif %}
 </div>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 col-10 mx-auto">
     {% for object in object_list %}

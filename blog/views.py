@@ -8,10 +8,9 @@ from blog.models import Publication
 from config.settings import EMAIL_HOST_USER
 
 # Create your views here.
-class PublicationCreateView(PermissionRequiredMixin, CreateView):
+class PublicationCreateView(CreateView):
     model = Publication
     form_class = PublicationForm
-    permission_required = 'blog.add_publication'
     # fields = ('name', 'description', 'image', 'publication_activ', 'counter')
     success_url = reverse_lazy('blog:list')
 

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
@@ -11,7 +11,8 @@ class MailingListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        mailings = Mailing.objects.all()
+        user = self.request.user
+        mailings = Mailing.objects.filter(owner=user)
         context['mailings_list'] = mailings
         return context
 
@@ -20,7 +21,8 @@ class MailingMessageListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        messages = MailingMessage.objects.all()
+        user = self.request.user
+        messages = MailingMessage.objects.filter(owner=user)
         context['messages'] = messages
         return context
 
@@ -29,7 +31,8 @@ class RecipientClientListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        clients = RecipientClient.objects.all()
+        user = self.request.user
+        clients = RecipientClient.objects.filter(owner=user)
         context['clients'] = clients
         return context
 
@@ -94,17 +97,38 @@ class MailingHistoryDeleteView(DeleteView):
     model = HistoryMailing
     success_url = reverse_lazy('mailings:history_list')
 
-class MailingCreateView(CreateView):
+class MailingCreateView(LoginRequiredMixin,CreateView):
     model = Mailing
     form_class = MailingUpdateForm
     success_url = reverse_lazy('mailings:mailings_list')
 
-class MailingMessageCreateView(CreateView):
+    def form_valid(self, form):
+        mailing = form.save()
+        user = self.request.user
+        mailing.owner = user
+        mailing.save()
+        return super().form_valid(form)
+
+class MailingMessageCreateView(LoginRequiredMixin, CreateView):
     model = MailingMessage
     form_class = MailingMessageUpdateForm
     success_url = reverse_lazy('mailings:message_list')
 
-class RecipientClientCreateView(CreateView):
+    def form_valid(self, form):
+        message = form.save()
+        user = self.request.user
+        message.owner = user
+        message.save()
+        return super().form_valid(form)
+
+class RecipientClientCreateView(LoginRequiredMixin, CreateView):
     model = RecipientClient
     form_class = RecipientClientUpdateForm
     success_url = reverse_lazy('mailings:clients_list')
+
+    def form_valid(self, form):
+        client = form.save()
+        user = self.request.user
+        client.owner = user
+        client.save()
+        return super().form_valid(form)

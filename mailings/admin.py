@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mailings.models import Mailing, MailingMessage, RecipientClient
+from mailings.models import Mailing, MailingMessage, RecipientClient, HistoryMailing
 # Register your models here.
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
@@ -12,3 +12,7 @@ class MailingMessageAdmin(admin.ModelAdmin):
 @admin.register(RecipientClient)
 class RecipientClientAdmin(admin.ModelAdmin):
     list_display = ('email', 'full_name', 'comment')
+
+@admin.register(HistoryMailing)
+class RecipientClientAdmin(admin.ModelAdmin):
+    list_display = ('last_date', 'status', 'response')

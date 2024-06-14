@@ -1,5 +1,7 @@
 import secrets
 from random import randint
+import random
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from config.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
@@ -9,6 +11,8 @@ from users.forms import UserRegisterForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView, TemplateView
 from users.models import User
+from mailings.models import Mailing, RecipientClient
+from blog.models import Publication
 from users.forms import UserProfileForm, RecoverPasswordForm
 
 # Create your views here.
@@ -43,13 +47,29 @@ def email_verification(request, token):
     user.save()
     return redirect(reverse('users:login'))
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        user = self.request.user
+        mailings_all = Mailing.objects.filter(owner=user)
+        mailings_active = Mailing.objects.filter(owner=user).filter(status='запущена')
+        clients = RecipientClient.objects.filter(owner=user)
+        clients_email = [client.email for client in clients]
+        uni_clients_email = set(clients_email)
+        list_blog = list(Publication.objects.all())
+        random.shuffle(list_blog)
+        context['mailings_all'] = len(mailings_all)
+        context['mailings_active'] = len(mailings_active)
+        context['uni_clients_email'] = len(uni_clients_email)
+        context['list_blog'] = list_blog[:3]
+        return context
 
 def recovery_password(request):
     if request.method == "POST":

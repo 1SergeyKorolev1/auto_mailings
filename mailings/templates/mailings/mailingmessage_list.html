@@ -9,6 +9,7 @@
 </div>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3  col-10 mx-auto">
     {% for message in messages %}
+    {% if user == message.owner %}
     <div class="col">
         <div class="card shadow-sm" style="min-width: 304px;">
             <div class="card-body">
@@ -27,6 +28,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
